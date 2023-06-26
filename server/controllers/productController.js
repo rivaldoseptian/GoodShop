@@ -41,6 +41,38 @@ class ProductController {
       next(error);
     }
   }
+
+  static async UpdateProduct(req, res, next) {
+    try {
+      const id = req.params.ProductId;
+      if (!id) throw { name: "Not Found" };
+      const { title, image, description, categoryId, stock } = req.body;
+      const product = await Product.findByPk(id);
+      if (!product) throw { name: "Not Found" };
+
+      await Product.update(
+        { title, image, description, categoryId, stock },
+        { where: { id } }
+      );
+      res.status(200).json({ message: "Succes Update Product" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async DeleteProduct(req, res, next) {
+    try {
+      const id = req.params.ProductId;
+      const product = await Product.findByPk(id);
+      if (!product) throw { name: "Not Found" };
+      await Product.destroy({
+        where: { id },
+      });
+      res.status(200).json({ message: "Succes Delete Product" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = ProductController;
