@@ -3,6 +3,10 @@ module.exports = (err, req, res, next) => {
   let status = 500;
 
   switch (err.name) {
+    case "Forbiden":
+      status = 403;
+      message = "You are not authorized";
+      break;
     case "JsonWebTokenError":
     case "Invalid Token":
       status = 401;
@@ -17,6 +21,10 @@ module.exports = (err, req, res, next) => {
     case "Invalid Email/Password":
       status = 404;
       message = "Invalid Email/Password";
+      break;
+    case "Not Found":
+      status = 404;
+      message = "Not Found";
       break;
     case "Email/Password Required":
       status = 400;
